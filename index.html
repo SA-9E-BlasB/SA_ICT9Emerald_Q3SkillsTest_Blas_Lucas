@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Around.PH Registration</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* page bg */
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      background: url('https://images.unsplash.com/photo-1625689291159-46338cbfc88c?q=80&w=2970&auto=format&fit=crop') center/cover no-repeat fixed;
+      background-blend-mode: overlay;
+      animation: slowDrive 45s infinite alternate ease-in-out;
+    }
+
+    /* dark overlay + blur */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 30, 10, 0.65);
+      backdrop-filter: blur(3px);
+      z-index: 0;
+    }
+
+    /* slow background pan */
+    @keyframes slowDrive {
+      0% { background-position: 0% 30%; }
+      50% { background-position: 100% 40%; }
+      100% { background-position: 0% 30%; }
+    }
+
+    /* main card */
+    .card {
+      max-width: 960px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      border-radius: 48px;
+      box-shadow: 0 40px 70px -10px #0f2f1a, 0 0 0 1px rgba(255, 210, 90, 0.3);
+      overflow: hidden;
+      border: 1px solid rgba(255, 240, 150, 0.4);
+      z-index: 20;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: scale(1.01);
+      box-shadow: 0 50px 90px -12px #8fcc45;
+    }
+
+    /* fake url bar */
+    .url-bar {
+      background: #edffe7;
+      padding: 12px 26px;
+      font-size: 0.9rem;
+      color: #1e5e3a;
+      border-bottom: 1px solid #b6d7b0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .url-text {
+      background: white;
+      padding: 4px 20px;
+      border-radius: 40px;
+      border: 1px solid #9fcca5;
+      color: #17613a;
+      font-family: 'SF Mono', 'Courier New', monospace;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    /* badge pill */
+    .driver-badge {
+      background: #ffdb7c;
+      color: #1b5e2f;
+      border-radius: 60px;
+      padding: 5px 16px;
+      font-weight: 800;
+      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #e5b23a;
+    }
+
+    /* top nav */
+    .nav-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 28px 8px 28px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid #bcddbb;
+    }
+
+    .logo-area {
+      font-weight: 800;
+      font-size: 2rem;
+      background: linear-gradient(145deg, #0f552e, #3b8f42);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      border-right: 2px solid #8fc97f;
+      padding-right: 20px;
+      margin-right: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      font-weight: 600;
+      color: #1a5e38;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #1a5e38;
+      font-size: 0.95rem;
+    }
+
+    /* right side buttons */
+    .action-buttons {
+      display: flex;
+      gap: 14px;
+    }
+
+    .book-now {
+      background: #2c7844;
+      color: white;
+      border: none;
+      padding: 8px 22px;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 8px rgba(30, 100, 20, 0.3);
+    }
+
+    .create-account-pill {
+      background: transparent;
+      border: 1.8px solid #267347;
+      color: #1e6a3b;
+      padding: 7px 20px;
+      border-radius: 40px;
+      font-weight: 700;
+    }
+
+    /* form heading */
+    .reg-header {
+      padding: 20px 28px 8px 28px;
+    }
+
+    .reg-header h2 {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: #1a4b2f;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .reg-header h2 i {
+      color: #f7b731;
+      font-size: 2rem;
+    }
+
+    .reg-header p {
+      color: #3e6b4e;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    /* two column layout */
+    .form-grid {
+      display: flex;
+      padding: 8px 28px 24px 28px;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    /* left column (photo) */
+    .profile-column { flex: 0 0 180px; }
+
+    .profile-card {
+      background: #e9ffeb;
+      border: 3px dashed #6da56d;
+      border-radius: 32px;
+      padding: 24px 12px 20px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      color: #1b5633;
+      transition: border 0.2s, background 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      position: relative;
+      box-shadow: 0 8px 0 #3e804e20;
+    }
+
+    .profile-card.profile-valid {
+      border-color: #269b48;
+      background: #e0ffe6;
+      box-shadow: 0 8px 0 #1e804030;
+    }
+
+    .profile-card.profile-invalid {
+      border-color: #c54b4b;
+      background: #fff0f0;
+    }
+
+    .profile-card i {
+      font-size: 3.5rem;
+      color: #388e5e;
+      margin-bottom: 10px;
+    }
+
+    .profile-valid i { color: #269b48; }
+    .profile-invalid i { color: #c54b4b; }
+
+    .profile-card .label {
+      font-weight: 800;
+      font-size: 1.2rem;
+      margin-bottom: 6px;
+    }
+
+    .profile-hint {
+      font-size: 0.75rem;
+      background: rgba(0,60,20,0.05);
+      padding: 4px 10px;
+      border-radius: 40px;
+      width: fit-content;
+      margin: 8px auto 4px;
+      color: #2c7844;
+    }
+
+    #profileName {
+      font-size: 0.9rem;
+      font-weight: 600;
+      background: white;
+      padding: 5px 12px;
+      border-radius: 40px;
+      border: 1px solid #95c99b;
+      max-width: 140px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .remove-profile {
+      margin-top: 10px;
+      background: none;
+      border: 1px solid #8fc18f;
+      border-radius: 30px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #1d673a;
+      cursor: pointer;
+      transition: 0.1s;
+    }
+
+    .remove-profile:hover { background: #c0e3c0; }
+    #profileUpload { display: none; }
+
+    /* right column (fields) */
+    .fields-column { flex: 1; min-width: 280px; }
+
+    .name-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .input-group {
+      margin-bottom: 18px;
+      flex: 1 1 calc(50% - 8px);
+      position: relative;
+    }
+
+    .input-group.full-width { flex: 1 1 100%; }
+
+    .input-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: #1d673a;
+      margin-bottom: 5px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.8px solid #b5dbb5;
+      border-radius: 24px;
+      font-size: 0.95rem;
+      background: white;
+      transition: border 0.15s, box-shadow 0.15s;
+      outline: none;
+      padding-right: 2.7rem;
+    }
+
+    .input-field:focus {
+      border-color: #2b8c4c;
+      box-shadow: 0 0 0 4px rgba(70, 150, 70, 0.15);
+    }
+
+    .input-icon {
+      position: absolute;
+      right: 14px;
+      font-size: 1.2rem;
+      pointer-events: none;
+      transition: color 0.2s;
+    }
+
+    /* validation states */
+    .input-group.valid .input-field {
+      border-color: #269b48;
+      background-color: #f6fff0;
+    }
+    .input-group.valid .input-icon { color: #269b48; }
+
+    .input-group.invalid .input-field {
+      border-color: #bc3b3b;
+      background-color: #fff8f8;
+    }
+    .input-group.invalid .input-icon { color: #bc3b3b; }
+
+    .input-group.neutral .input-icon { color: #9eb7d3; }
+
+    /* terms */
+    .terms-row {
+      margin: 14px 0 22px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #e2f4de;
+      padding: 8px 16px;
+      border-radius: 50px;
+      border: 1px solid #98cb98;
+    }
+
+    .terms-row input {
+      width: 18px;
+      height: 18px;
+      accent-color: #249e4b;
+    }
+
+    .terms-row label a {
+      color: #116b37;
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    /* submit */
+    .create-btn {
+      background: #1d7a3b;
+      border: none;
+      color: white;
+      font-weight: 800;
+      font-size: 1.25rem;
+      padding: 16px 24px;
+      border-radius: 60px;
+      width: 100%;
+      cursor: pointer;
+      transition: background 0.15s, opacity 0.2s, transform 0.1s;
+      box-shadow: 0 14px 24px -12px #116b2f;
+      letter-spacing: 0.5px;
+      border-bottom: 3px solid #0f582a;
+    }
+
+    .create-btn:hover:not(:disabled) {
+      background: #249e4b;
+      transform: scale(1.01);
+      border-bottom-color: #168f3d;
+    }
+
+    .create-btn:disabled {
+      background: #91ba91;
+      box-shadow: none;
+      cursor: not-allowed;
+      opacity: 0.7;
+      border-bottom-color: #6b946b;
+    }
+
+    /* footer */
+    .footer {
+      background: #daf1da;
+      padding: 16px 28px;
+      border-top: 1px solid #afd2af;
+      display: flex;
+      justify-content: space-between;
+      color: #1f6136;
+      font-weight: 600;
+      flex-wrap: wrap;
+    }
+
+    .footer .copy { color: #3b7843; }
+
+    /* floating background icons */
+    .driver-bg-icons {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 5;
+      font-size: 2.5rem;
+      color: rgba(255, 230, 140, 0.25);
+      pointer-events: none;
+      display: flex;
+      gap: 25px;
+    }
+
+    .driver-bg-icons i {
+      filter: drop-shadow(0 0 12px #9ccc70);
+      animation: floatIcons 8s infinite alternate;
+    }
+
+    @keyframes floatIcons {
+      0% { transform: translateY(0px) rotate(-2deg); opacity: 0.2; }
+      100% { transform: translateY(-30px) rotate(3deg); opacity: 0.4; }
+    }
+
+    /* small banner note */
+    .reactive-note {
+      margin-top: 14px;
+      font-size: 0.8rem;
+      color: #f0ffe4;
+      text-align: center;
+      text-shadow: 0 2px 6px #0d3d2a;
+      z-index: 25;
+    }
+
+    .reactive-note i {
+      font-style: normal;
+      background: #194d2edd;
+      padding: 3px 22px;
+      border-radius: 40px;
+      backdrop-filter: blur(4px);
+      border: 1px solid #8ae9a0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="driver-bg-icons">
+    <i class="fas fa-motorcycle"></i>
+    <i class="fas fa-taxi"></i>
+    <i class="fas fa-truck"></i>
+    <i class="fas fa-bicycle"></i>
+    <i class="fas fa-car"></i>
+    <i class="fas fa-van-shuttle"></i>
+  </div>
+
+  <div class="card">
+    <div class="url-bar">
+      <i class="fas fa-map-pin" style="color:#e5a811;"></i>
+      <span class="url-text">allaround.ph.com/member/register · PH</span>
+      <span class="driver-badge"><i class="fas fa-motorcycle"></i> DRIVER TYPE · ALL VEHICLES</span>
+    </div>
+
+    <div class="nav-header">
+      <div style="display:flex; align-items:center;">
+        <div class="logo-area">MEMBERSHIP</div>
+        <div class="nav-links">
+          <a href="#">Ride</a><a href="#">Food</a><a href="#">Express</a><a href="#">Help</a>
+        </div>
+      </div>
+      <div class="action-buttons">
+        <span class="book-now">Become a Member of Our Community</span>
+        <span class="create-account-pill">Sign In</span>
+      </div>
+    </div>
+
+    <div class="reg-header">
+      <h2>
+        <i class="fas fa-motorcycle"></i> MEMBERSHIP REGISTRATION ·
+        <span style="font-size:1.2rem; background:#eaffdd; padding:4px 16px; border-radius:60px;">Philippines</span>
+      </h2>
+      <p>Join the All Around.PH family</p>
+    </div>
+
+    <form autocomplete="off">
+      <div class="form-grid">
+        <div class="profile-column">
+          <div class="profile-card" id="profileCard">
+            <i class="fas fa-cloud-upload-alt" id="profileIcon"></i>
+            <div class="label">Photo</div>
+            <div class="profile-hint" id="profileHint">click to upload</div>
+
+            <div id="profileName">- no file -</div>
+            <button class="remove-profile" id="removeProfileBtn" type="button">
+              <i class="fas fa-trash-alt"></i> remove
+            </button>
+
+            <input type="file" id="profileUpload" accept="image/png, image/jpeg, image/gif, image/webp">
+          </div>
+
+          <div style="margin-top:12px; background:#e1f0df; border-radius:30px; padding:8px; text-align:center; font-size:0.9rem; border:1px solid #aacfa2;">
+            <i class="fas fa-motorcycle" style="color:#1e6a3b;"></i> Motorcycle /
+            <i class="fas fa-taxi" style="color:#1e6a3b;"></i> Taxi
+          </div>
+        </div>
+
+        <div class="fields-column">
+          <div class="name-row">
+            <div class="input-group" id="group-firstName">
+              <label>First Name</label>
+              <div class="input-wrapper">
+                <input type="text" class="input-field" id="firstName" placeholder="Enter first name" autocomplete="off" autocapitalize="words">
+                <span class="input-icon"><i class="fas fa-circle"></i></span>
+              </div>
+            </div>
+
+            <div class="input-group" id="group-lastName">
+              <label>Last Name</label>
+              <div class="input-wrapper">
+                <input type="text" class="input-field" id="lastName" placeholder="Enter last name" autocomplete="off" autocapitalize="words">
+                <span class="input-icon"><i class="fas fa-circle"></i></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="name-row">
+            <div class="input-group" id="group-age">
+              <label>Age</label>
+              <div class="input-wrapper">
+                <input type="text" class="input-field" id="age" placeholder="Enter age" autocomplete="off" inputmode="numeric">
+                <span class="input-icon"><i class="fas fa-circle"></i></span>
+              </div>
+            </div>
+
+            <div class="input-group" id="group-contact">
+              <label>Contact (PH)</label>
+              <div class="input-wrapper">
+                <input type="tel" class="input-field" id="contact" placeholder="+63 ___ ___ ____" autocomplete="off" inputmode="tel">
+                <span class="input-icon"><i class="fas fa-circle"></i></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="name-row" style="margin-bottom:18px;">
+            <div class="input-group full-width" style="flex:1 1 100%;">
+              <label><i class="fas fa-steering-wheel"></i> Preferred Transportation Type</label>
+              <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                <label style="background:#e2f4de; padding:10px 18px; border-radius:36px; border:2px solid #afd8af; flex:1; text-align:center; cursor:pointer;">
+                  <input type="radio" name="vehicleType" value="motorcycle" checked style="accent-color:#249e4b;">
+                  <i class="fas fa-motorcycle"></i> Motorcycle
+                </label>
+                <label style="background:#e2f4de; padding:10px 18px; border-radius:36px; border:2px solid #afd8af; flex:1; text-align:center; cursor:pointer;">
+                  <input type="radio" name="vehicleType" value="taxi" style="accent-color:#249e4b;">
+                  <i class="fas fa-taxi"></i> Taxi / Car
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-group full-width" id="group-email">
+            <label>Email</label>
+            <div class="input-wrapper">
+              <input type="email" class="input-field" id="email" placeholder="name@example.com" autocomplete="off" inputmode="email">
+              <span class="input-icon"><i class="fas fa-circle"></i></span>
+            </div>
+          </div>
+
+          <div class="input-group full-width" id="group-username">
+            <label>Username (at least 4 chars)</label>
+            <div class="input-wrapper">
+              <input type="text" class="input-field" id="username" placeholder="Create a username" autocomplete="off">
+              <span class="input-icon"><i class="fas fa-circle"></i></span>
+            </div>
+          </div>
+
+          <div class="input-group full-width" id="group-password">
+            <label>Password (min. 6 characters)</label>
+            <div class="input-wrapper">
+              <input type="password" class="input-field" id="password" placeholder="At least 6 characters" autocomplete="new-password">
+              <span class="input-icon"><i class="fas fa-circle"></i></span>
+            </div>
+          </div>
+
+          <div class="terms-row">
+            <input type="checkbox" id="termsCheckbox" checked>
+            <label for="termsCheckbox">I accept the <a href="#">Membership Terms</a> & <a href="#">Fleet Agreement</a></label>
+          </div>
+
+          <button class="create-btn" id="createAccountBtn" disabled>Register</button>
+        </div>
+      </div>
+
+      <div class="footer">
+        <span><i class="fas-regular fa-circle-check"></i> Member Registration</span>
+        <span class="copy">© 2026 AllAround.PH</span>
+      </div>
+    </form>
+  </div>
+
+  <div class="reactive-note">
+    <i>‼️ Membership · MOTORCYCLE / TAXI · All Around.PH PHILIPPINES ‼️</i>
+  </div>
+
+  <script>
+    (function() {
+      // dom refs
+      const profileUpload = document.getElementById('profileUpload');
+      const profileCard = document.getElementById('profileCard');
+      const profileIcon = document.getElementById('profileIcon');
+      const profileNameSpan = document.getElementById('profileName');
+      const profileHint = document.getElementById('profileHint');
+      const removeBtn = document.getElementById('removeProfileBtn');
+
+      // fields
+      const firstName = document.getElementById('firstName');
+      const lastName = document.getElementById('lastName');
+      const age = document.getElementById('age');
+      const contact = document.getElementById('contact');
+      const email = document.getElementById('email');
+      const username = document.getElementById('username');
+      const password = document.getElementById('password');
+      const terms = document.getElementById('termsCheckbox');
+      const createBtn = document.getElementById('createAccountBtn');
+
+      // validation wrappers (for border + icon)
+      const groups = {
+        firstName: document.getElementById('group-firstName'),
+        lastName: document.getElementById('group-lastName'),
+        age: document.getElementById('group-age'),
+        contact: document.getElementById('group-contact'),
+        email: document.getElementById('group-email'),
+        username: document.getElementById('group-username'),
+        password: document.getElementById('group-password')
+      };
+
+      // upload state
+      let profileFile = null;
+      let profileValid = false;
+
+      // tiny validators
+      function isValidName(v) { return v.trim().length >= 2; }                     // 2+ chars
+      function isValidAge(v) { return /^\d{1,3}$/.test(v) && +v > 0 && +v < 130; } // sane age
+      function isValidContact(v) { return v.trim().length >= 5; }                  // simple
+      function isValidEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }    // basic email
+      function isValidUsername(v) { return v.trim().length >= 4; }                 // 4+ chars
+      function isValidPassword(v) { return v.length >= 6; }                        // 6+ chars
+
+      function validateField(field, group, validator) {
+        // sets icon + border based on input
+        const icon = group.querySelector('.input-icon i');
+        const value = field.value.trim();
+        const ok = value !== '' && validator(value);
+
+        if (value === '') {
+          group.classList.remove('valid', 'invalid');
+          group.classList.add('neutral');
+          icon.className = 'fas fa-circle';
+        } else if (ok) {
+          group.classList.add('valid');
+          group.classList.remove('invalid', 'neutral');
+          icon.className = 'fas fa-check-circle';
+        } else {
+          group.classList.add('invalid');
+          group.classList.remove('valid', 'neutral');
+          icon.className = 'fas fa-exclamation-circle';
+        }
+        return ok;
+      }
+
+      function updateProfileUI() {
+        // photo card feedback
+        if (profileValid && profileFile) {
+          profileCard.classList.add('profile-valid');
+          profileCard.classList.remove('profile-invalid');
+          profileIcon.className = 'fas fa-check-circle';
+          profileHint.innerText = '✅ driver photo OK';
+        } else {
+          profileCard.classList.add('profile-invalid');
+          profileCard.classList.remove('profile-valid');
+          profileIcon.className = 'fas fa-cloud-upload-alt';
+          profileHint.innerText = profileFile ? '❌ invalid (jpg/png <2MB)' : 'upload photo';
+        }
+      }
+
+      function validateAll() {
+        // run all checks
+        const f1 = validateField(firstName, groups.firstName, isValidName);
+        const f2 = validateField(lastName, groups.lastName, isValidName);
+        const f3 = validateField(age, groups.age, isValidAge);
+        const f4 = validateField(contact, groups.contact, isValidContact);
+        const f5 = validateField(email, groups.email, isValidEmail);
+        const f6 = validateField(username, groups.username, isValidUsername);
+        const f7 = validateField(password, groups.password, isValidPassword);
+
+        const fieldsOK = f1 && f2 && f3 && f4 && f5 && f6 && f7;  // all fields valid
+        const photoOK = profileValid;                              // requires upload
+        const termsOK = terms.checked;                             // checkbox
+
+        createBtn.disabled = !(fieldsOK && photoOK && termsOK);
+      }
+
+      function handleProfileUpload(file) {
+        // type + size gate
+        if (!file) {
+          profileFile = null;
+          profileValid = false;
+          profileNameSpan.innerText = '- no file -';
+          updateProfileUI();
+          validateAll();
+          return;
+        }
+
+        const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        const isValidType = validTypes.includes(file.type);
+        const isValidSize = file.size <= 2 * 1024 * 1024; // 2MB cap
+
+        profileFile = file;
+        profileValid = isValidType && isValidSize;
+
+        profileNameSpan.innerText =
+          file.name.length > 20 ? file.name.substring(0, 18) + '…' : file.name;
+
+        if (!profileValid) profileNameSpan.innerText += ' (invalid)';
+
+        updateProfileUI();
+        validateAll();
+      }
+
+      // click card -> file picker
+      profileCard.addEventListener('click', (e) => {
+        if (e.target === removeBtn || removeBtn.contains(e.target)) return;
+        profileUpload.click();
+      });
+
+      // file picked
+      profileUpload.addEventListener('change', (e) => {
+        handleProfileUpload(e.target.files[0] || null);
+      });
+
+      // remove file
+      removeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        profileUpload.value = '';
+        handleProfileUpload(null);
+      });
+
+      // live validation
+      [firstName, lastName, age, contact, email, username, password].forEach(inp => {
+        inp.addEventListener('input', validateAll);
+        inp.addEventListener('blur', validateAll);
+      });
+
+      terms.addEventListener('change', validateAll);
+
+      // init
+      updateProfileUI();
+      validateAll();
+
+      // submit (demo)
+      createBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (createBtn.disabled) return;
+
+        alert('To register, click OK');
+      });
+    })();
+  </script>
+</body>
+</html>
